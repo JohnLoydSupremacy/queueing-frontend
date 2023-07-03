@@ -6,6 +6,7 @@ const state = {
   service: null,
   serviceName: null,
   requests: [],
+  section: null,
 };
 
 const getters = {
@@ -16,6 +17,7 @@ const getters = {
   getService: (state) => state.service,
   getServiceName: (state) => state.serviceName,
   getRequests: (state) => state.requests,
+  getSection: (state) => state.section,
 };
 
 const mutations = {
@@ -40,6 +42,9 @@ const mutations = {
   setServiceName(state, serviceName) {
     state.serviceName = serviceName;
   },
+  setSection(state, section) {
+    state.section = section;
+  },
   // Clear the state properties
   clearState(state) {
     state.userType = null;
@@ -49,6 +54,7 @@ const mutations = {
     state.service = null;
     state.serviceName = null;
     state.requests = [];
+    state.section = null;
   },
 };
 
@@ -74,6 +80,9 @@ const actions = {
   setServiceNameAction({ commit }, serviceName) {
     commit("setServiceName", serviceName);
   },
+  setSection({ commit }, section) {
+    commit("setSection", section);
+  },
   // Action to clear the state
   clearStateAction({ commit }) {
     commit("clearState");
@@ -94,6 +103,7 @@ const plugins = [
       );
       localStorage.setItem("service", JSON.stringify(state.service));
       localStorage.setItem("serviceName", JSON.stringify(state.serviceName));
+      localStorage.setItem("section", JSON.stringify(state.section));
     });
   },
 ];

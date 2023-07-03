@@ -13,6 +13,11 @@ import ButtonVue from "./components/Button.vue";
 
 export default {
   name: "App",
+  data() {
+    return {
+      section: null,
+    }
+  },
   components: {
     ThemeProvider,
     Wrapper,
@@ -26,12 +31,20 @@ export default {
       this.clearState();
     },
   },
+  created() {
+    const section = this.$store.getters.getSection;
+    this.section = section;
+    console.log(section)
+  },
 };
 </script>
 
 <template>
   <theme-provider>
     <Wrapper>
+      <div class="items-center grid grid-row-1 md:grid-row-1 dark:bg-black">
+        {{ section }}
+      </div>
       <div
         class="items-center grid grid-cols-1 md:grid-cols-3 gap-4 dark:bg-black"
       >

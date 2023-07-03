@@ -35,6 +35,8 @@ import Button from "../components/Button.vue";
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
@@ -45,6 +47,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setSection"]),
     setStudentIdAction() {
       if(this.invalidInput === false && this.studentId !== ''){
         this.$store.commit("setStudentId", this.studentId);
@@ -77,6 +80,7 @@ export default {
   created() {
     const userType = this.$store.getters.getUserType;
     this.userType = userType;
+    this.setSection("IdInput");
   },
 };
 </script>
