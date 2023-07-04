@@ -17,6 +17,7 @@ import Button from "../components/Button.vue";
     <!-- <Button> Guest </Button>
     <Button> Guest </Button> -->
   </div>
+  
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import UserTypeSelectionPage from "../views/UserTypeSelectionPage.vue";
 import IDInputPage from "../views/IDInputPage.vue";
 import DepartmentSelectionPage from "../views/DepartmentSelectionPage.vue";
 import ServiceSelectionPage from "../views/ServiceSelectionPage.vue";
@@ -12,8 +12,8 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: HomeView,
+      name: "department-select",
+      component: DepartmentSelectionPage,
     },
     {
       path: "/about",
@@ -29,9 +29,9 @@ const router = createRouter({
       component: IDInputPage,
     },
     {
-      path: "/department-select",
-      name: "department-select",
-      component: DepartmentSelectionPage,
+      path: "/user-type",
+      name: "user-type",
+      component: UserTypeSelectionPage,
     },
     {
       path: "/service-selection",

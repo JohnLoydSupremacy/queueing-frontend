@@ -4,7 +4,7 @@ import Button from "../components/Button.vue";
 </script>
 
 <template>
-  <Question class="text-center" text="What is your Department?" />
+  <Question class="text-center" text="Which Department do you want to transact?" />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
   >

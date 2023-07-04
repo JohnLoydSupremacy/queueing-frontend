@@ -7,19 +7,17 @@ import Button from "../components/Button.vue";
   <Question class="text-center" text="Please choose a service" />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
+    v-if="services.length > 0"
   >
-    <div v-if="services.length > 0">
       <RouterLink
         v-for="service in services"
         :key="service.id"
-        to="/additional-requests"
+        to="/user-type"
       >
         <Button @click="setServiceAction(service)">
           {{ service.name }}
         </Button>
       </RouterLink>
-    </div>
-    <div v-else><p class="dark:text-white">No services found.</p></div>
     <!-- <RouterLink to="/additional-requests">
       <Button @click="setServiceAction('Service2')"> Service 2 </Button>
     </RouterLink>
@@ -32,6 +30,7 @@ import Button from "../components/Button.vue";
     <!-- <Button> Guest </Button>
     <Button> Guest </Button> -->
   </div>
+  <div v-else><p class="dark:text-white">No services found.</p></div>
 </template>
 
 <script>

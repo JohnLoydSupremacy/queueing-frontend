@@ -24,6 +24,9 @@ const mutations = {
   addRequest(state, newRequest) {
     state.requests.push(newRequest);
   },
+  removeRequest(state, index) {
+    state.requests.splice(index, 1);
+  },
   setUserType(state, userType) {
     state.userType = userType;
   },
@@ -61,6 +64,9 @@ const mutations = {
 const actions = {
   addRequestAction({ commit }, newRequest) {
     commit("addRequest", newRequest);
+  },
+  removeRequestAction({ commit }, index) {
+    commit("removeRequest", index);
   },
   setUserTypeAction({ commit }, userType) {
     commit("setUserType", userType);

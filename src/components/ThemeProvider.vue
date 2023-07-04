@@ -1,6 +1,18 @@
 <template>
   <div :class="[{ dark: isDarkMode }, 'dark:bg-black']">
     <slot></slot>
+    <div class="fixed top-4 right-4 z-50">
+      <div>
+        <ButtonFullscreen :class="{ 'bg-white': !isDarkMode, 'bg-black': isDarkMode, 'dark:text-white': isDarkMode }">
+        Fullscreen
+      </ButtonFullscreen>
+      </div>
+      <button
+        class="relative w-12 h-6 rounded-full"
+        @click="toggleDarkMode"
+      >
+      </button>
+    </div>
     <div class="fixed bottom-4 right-4 z-50">
       <button
         class="relative w-12 h-6 rounded-full bg-gray-300 dark:bg-gray-700"
@@ -24,18 +36,22 @@
         </div>
       </button>
     </div>
+    <div class="fixed top-4 right-4 z-50">
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, watchEffect } from "vue";
 import { SunIcon, MoonIcon } from "@heroicons/vue/24/solid";
+import ButtonFullscreen from "./ButtonFullscreen.vue";
 
 export default {
   name: "ThemeProvider",
   components: {
     SunIcon,
     MoonIcon,
+    ButtonFullscreen
   },
   setup() {
     const isDarkMode = ref(false);

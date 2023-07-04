@@ -5,7 +5,13 @@ import Button from "../components/Button.vue";
 
 <template>
   <div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <Question
+      class="text-center mb-3"
+      text="Do you have additional requests?"
+    />
+    <table
+      class="w-full mb-3 text-sm text-left text-gray-500 dark:text-gray-400"
+    >
       <thead
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
       >
@@ -15,6 +21,7 @@ import Button from "../components/Button.vue";
           <th scope="col" class="px-6 py-3">ID</th>
           <th scope="col" class="px-6 py-3">Department</th>
           <th scope="col" class="px-6 py-3">Service</th>
+          <th scope="col" class="px-6 py-3"></th>
         </tr>
       </thead>
       <tbody>
@@ -33,20 +40,41 @@ import Button from "../components/Button.vue";
           <td class="px-6 py-4">{{ request.studentId }}</td>
           <td class="px-6 py-4">{{ request.departmentName }}</td>
           <td class="px-6 py-4">{{ request.serviceName }}</td>
+          <td class="px-6 py-4">
+            <button class="px-3 py-3 hover:bg-gray-600 rounded-lg">
+              <svg
+                class="w-[22px] h-[22px] text-red-500 dark:text-red"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 18 20"
+                @click="removeRequest(request.id)"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"
+                />
+              </svg>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <Question class="text-center" text="Do you have additional Requests?" />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
   >
     <RouterLink to="/">
-      <Button @click="submit('Yes')"> Yes </Button>
+      <Button color="gray" @click="submit('Yes')">
+        Yes, I want to add more
+      </Button>
     </RouterLink>
     <RouterLink to="/ticket-display">
-      <Button @click="submit('No')"> No </Button>
+      <Button @click="submit('No')"> Finish </Button>
     </RouterLink>
     <!-- <Button> Guest </Button>
     <Button> Guest </Button> -->
@@ -70,6 +98,7 @@ export default {
     const serviceName = this.$store.getters.getServiceName;
 
     const request = {
+      id: this.requests.length,
       userType: userType,
       studentId: studentId,
       department: department,
@@ -78,7 +107,14 @@ export default {
       serviceName: serviceName,
     };
 
-    this.addRequest(request);
+    if (
+      userType != null &&
+      studentId != null &&
+      department != null &&
+      service != null
+    ) {
+      this.addRequest(request);
+    }
   },
   data() {
     return {
@@ -86,7 +122,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["addRequest", "clearState"]),
+    ...mapMutations(["addRequest", "removeRequest", "clearState"]),
 
     submit(answer) {
       const requests = this.$store.getters.getRequests;
