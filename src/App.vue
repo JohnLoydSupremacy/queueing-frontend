@@ -17,6 +17,14 @@ export default {
   data() {
     return {
       section: null,
+      breadCrumbButtonClasses: {
+        DepartmentSelectionPage: "font-medium text-gray-500",
+        ServiceSelectionPage: "font-medium text-gray-500",
+        UserTypeSelectionPage: "font-medium text-gray-500",
+        IDInputPage: "font-medium text-gray-500",
+        AdditionalRequestsPage: "font-medium text-gray-500",
+        TicketDisplayPage: "font-medium text-gray-500",
+      },
     };
   },
   components: {
@@ -32,11 +40,59 @@ export default {
     clearStateAction() {
       this.clearState();
     },
+
+    getStepTextClass(step) {
+      const currentIndex = this.breadcrumbSteps.findIndex(
+        (breadcrumbStep) => breadcrumbStep === this.currentStep()
+      );
+
+      const stepIndex = this.breadcrumbSteps.findIndex(
+        (breadcrumbStep) => breadcrumbStep === step
+      );
+
+      if (stepIndex > currentIndex) {
+        return "font-medium text-gray-500";
+      } else if (step === this.currentStep()) {
+        return "font-medium text-blue-500";
+      } else {
+        return "font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white";
+      }
+    },
+
+    currentStep() {
+      const currentSection = this.section; // Replace with the actual value of the current section
+      return this.breadcrumbSteps.find(
+        (step) => step.section === currentSection
+      );
+    },
+
+    changeClass(section, sectionClass) {
+      console.log(section, sectionClass);
+      this.breadCrumbButtonClasses[section] = sectionClass;
+    },
+  },
+  watch: {
+    appSection: function (newSection, oldSection) {
+      this.changeClass(
+        newSection,
+        "font-medium text-blue-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      );
+      // loop through all items in object breadCrumbCLasses and set it to gray
+      const breadCrumbButtonClasses = Object.keys(this.breadCrumbButtonClasses);
+      for (let page of breadCrumbButtonClasses) {
+        if (page != newSection) {
+          this.changeClass(page, "font-medium text-gray-500");
+        }
+      }
+    },
   },
   created() {
     const section = this.$store.getters.getSection;
     this.section = section;
-    console.log(section);
+    this.changeClass(
+      section,
+      "font-medium text-blue-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+    );
   },
   setup() {
     const router = useRouter();
@@ -48,38 +104,46 @@ export default {
       goBack,
     };
   },
+  computed: {
+    breadcrumbSteps() {
+      return [
+        { label: "Select Departments", section: "DepartmentSelectionPage" },
+        { label: "Select Service", section: "ServiceSelectionPage" },
+        { label: "Select User Type", section: "UserTypeSelectionPage" },
+        { label: "Enter ID", section: "IDInputPage" },
+        { label: "Summary", section: "AdditionalRequestsPage" },
+        { label: "Ticket", section: "TicketDisplayPage" },
+      ];
+    },
+    appSection() {
+      return this.$store.getters.getSection;
+    },
+  },
+  mounte() {
+    console.log(this.breadCrumbButtonClasses);
+  },
 };
 </script>
 
 <template>
   <theme-provider>
     <div
-      class="fixed flex justify-center items-center w-full px-6 py-6 lg:px-8"
+      class="fixed flex justify-center items-center w-full px-6 py-6 lg:px-8 z-50"
     >
       <nav class="flex hidden md:flex" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-3">
-          <li class="inline-flex items-center">
-            <a
-              href="#"
-              class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+          <li
+            v-for="(step, index) in breadcrumbSteps"
+            :key="index"
+            :class="breadCrumbButtonClasses[step.section]"
+          >
+            <button
+              class="flex items-center"
+              :href="step.link"
+              :class="breadCrumbButtonClasses[step.section]"
             >
               <svg
-                aria-hidden="true"
-                class="w-4 h-4 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-                ></path>
-              </svg>
-              Select Departments
-            </a>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <svg
+                v-if="index !== 0"
                 aria-hidden="true"
                 class="w-6 h-6 text-gray-400"
                 fill="currentColor"
@@ -92,99 +156,8 @@ export default {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <a
-                href="#"
-                class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-                >Select Service</a
-              >
-            </div>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <svg
-                aria-hidden="true"
-                class="w-6 h-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <a
-                href="#"
-                class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-                >Select User Type</a
-              >
-            </div>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <svg
-                aria-hidden="true"
-                class="w-6 h-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <a
-                href="#"
-                class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-                >Enter ID</a
-              >
-            </div>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <svg
-                aria-hidden="true"
-                class="w-6 h-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <a
-                href="#"
-                class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-                >Summary</a
-              >
-            </div>
-          </li>
-          <li aria-current="page">
-            <div class="flex items-center">
-              <svg
-                aria-hidden="true"
-                class="w-6 h-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <span
-                class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"
-                >Ticket</span
-              >
-            </div>
+              {{ step.label }}
+            </button>
           </li>
         </ol>
       </nav>

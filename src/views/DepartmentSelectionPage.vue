@@ -4,7 +4,7 @@ import Button from "../components/Button.vue";
 </script>
 
 <template>
-  <Question class="text-center" text="Which Department do you want to transact?" />
+  <Question class="text-center" text="Choose a Department for your Transaction" />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
   >
@@ -34,6 +34,7 @@ import Button from "../components/Button.vue";
 <script>
 import axios from "axios";
 import { DEPARTMENTS_ENDPOINT } from "../config.js";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -41,6 +42,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setSection"]),
     async getDepartments() {
       const response = await axios.get(DEPARTMENTS_ENDPOINT);
       this.departments = response.data;
@@ -53,6 +55,7 @@ export default {
   },
   async created() {
     await this.getDepartments();
+    this.setSection("DepartmentSelectionPage");
   },
 };
 </script>

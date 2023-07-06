@@ -7,6 +7,7 @@ const state = {
   serviceName: null,
   requests: [],
   section: null,
+  ticket: null,
 };
 
 const getters = {
@@ -18,6 +19,7 @@ const getters = {
   getServiceName: (state) => state.serviceName,
   getRequests: (state) => state.requests,
   getSection: (state) => state.section,
+  getTicket: (state) => state.ticket,
 };
 
 const mutations = {
@@ -26,6 +28,9 @@ const mutations = {
   },
   removeRequest(state, index) {
     state.requests.splice(index, 1);
+  },
+  setRequests(state, requests) {
+    state.requests = requests;
   },
   setUserType(state, userType) {
     state.userType = userType;
@@ -48,6 +53,9 @@ const mutations = {
   setSection(state, section) {
     state.section = section;
   },
+  setTicket(state, ticket) {
+    state.ticket = ticket;
+  },
   // Clear the state properties
   clearState(state) {
     state.userType = null;
@@ -58,6 +66,7 @@ const mutations = {
     state.serviceName = null;
     state.requests = [];
     state.section = null;
+    state.ticket = null;
   },
 };
 
@@ -67,6 +76,9 @@ const actions = {
   },
   removeRequestAction({ commit }, index) {
     commit("removeRequest", index);
+  },
+  setRequestsAction({ commit }, requests) {
+    commit("setRequests", requests);
   },
   setUserTypeAction({ commit }, userType) {
     commit("setUserType", userType);
@@ -86,12 +98,36 @@ const actions = {
   setServiceNameAction({ commit }, serviceName) {
     commit("setServiceName", serviceName);
   },
-  setSection({ commit }, section) {
+  setSectionAction({ commit }, section) {
     commit("setSection", section);
+  },
+  setTicketAction({ commit }, ticket) {
+    commit("setTicket", ticket);
   },
   // Action to clear the state
   clearStateAction({ commit }) {
     commit("clearState");
+  },
+  loadStoredState({ commit }) {
+    const userType = localStorage.getItem("userType");
+    const studentId = localStorage.getItem("studentId");
+    const department = localStorage.getItem("department");
+    const departmentName = localStorage.getItem("departmentName");
+    const service = localStorage.getItem("service");
+    const serviceName = localStorage.getItem("serviceName");
+    const requests = JSON.parse(localStorage.getItem("requests"));
+    const section = localStorage.getItem("section");
+    const ticket = JSON.parse(localStorage.getItem("ticket"));
+
+    commit("setUserType", userType);
+    commit("setStudentId", studentId);
+    commit("setDepartment", department);
+    commit("setDepartmentName", departmentName);
+    commit("setService", service);
+    commit("setServiceName", serviceName);
+    commit("setRequests", requests);
+    commit("setSection", section);
+    commit("setTicket", ticket);
   },
 };
 
@@ -100,16 +136,14 @@ const plugins = [
   (store) => {
     store.subscribe((mutation, state) => {
       localStorage.setItem("requests", JSON.stringify(state.requests));
-      localStorage.setItem("userType", JSON.stringify(state.userType));
-      localStorage.setItem("studentId", JSON.stringify(state.studentId));
-      localStorage.setItem("department", JSON.stringify(state.department));
-      localStorage.setItem(
-        "departmentName",
-        JSON.stringify(state.departmentName)
-      );
-      localStorage.setItem("service", JSON.stringify(state.service));
-      localStorage.setItem("serviceName", JSON.stringify(state.serviceName));
-      localStorage.setItem("section", JSON.stringify(state.section));
+      localStorage.setItem("userType", state.userType);
+      localStorage.setItem("studentId", state.studentId);
+      localStorage.setItem("department", state.department);
+      localStorage.setItem("departmentName", state.departmentName);
+      localStorage.setItem("service", state.service);
+      localStorage.setItem("serviceName", state.serviceName);
+      localStorage.setItem("section", state.section);
+      localStorage.setItem("ticket", JSON.stringify(state.ticket));
     });
   },
 ];

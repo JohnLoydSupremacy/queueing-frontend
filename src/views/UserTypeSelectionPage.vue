@@ -4,7 +4,7 @@ import Button from "../components/Button.vue";
 </script>
 
 <template>
-  <Question class="text-center" text="Choose one" />
+  <Question class="text-center" text="Select an Option" />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
   >
@@ -21,11 +21,17 @@ import Button from "../components/Button.vue";
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
+
   methods: {
+    ...mapMutations(["setSection"]),
     setUserTypeAction(userType) {
       this.$store.commit("setUserType", userType);
     },
+  },
+  created() {
+    this.setSection("UserTypeSelectionPage");
   },
 };
 </script>

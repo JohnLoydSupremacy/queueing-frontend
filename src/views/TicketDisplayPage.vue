@@ -1,59 +1,46 @@
 <script setup>
 import Button from "../components/Button.vue";
+import TicketDisplay from "../components/TicketDisplay.vue";
 </script>
 
 <template>
   <div class="dark:text-white">Ticket Display</div>
-  <div class="dark:text-white ticket-container" style="position: center; top: 45px; left: 50%; width: 300px; background: white; border: 1px solid black;">
-    <div class="receipt-token" style="padding: 10px; text-align: center;">
-      <div style="display: flex; justify-content: center; align-items: center;">
-        <img src="@/assets/lpu.png" width="20" height="20">
-        <h4 style="font-size: 14px; margin: 1px 0;">QUEUE MANAGEMENT SYSTEM</h4>
-      </div>
-      <h1 style="font-size: 26px; margin: 14px 0;"><strong>" + data.token.token_no + "</strong></h1>
-      <hr style="border-top: 1px dashed black; margin: 4px 0;">
-      <ul class="list-unstyled" style="font-size: 12px; margin: 0; padding: 0;">
-        <li><strong>Student No.: </strong>" + data.token.studentId + "</li>
-        <li><strong>DEPARTMENT: </strong>" + data.token.department + "</li>
-        <li><strong>TRANSACTION TYPE: </strong>" + data.transactionType.name + "</li>
-        <li><strong>COUNTER: </strong>" + data.token.counter + "</li>
-        <li><strong>DATE: </strong>" + data.token.created_at + "</li><br>
-        <li><strong>Your Transactions:</strong></li>
-        <ul class="list-unstyled" style="font-size: 12px; margin: 0; padding: 0;">
-          <li>" + transactionContent + "</li>
-        </ul>
-      </ul>
-    </div>
+  <div id="ticket-display">
+    <TicketDisplay :ticket="ticket" />
   </div>
   <router-link to="/">
     <Button @click="clearStateAction">Start Over</Button>
   </router-link>
-  <Button @click="generatePDF">Print</Button>
+  <Button @click="print">Print</Button>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
-import jsPDF from 'jspdf'
 
 export default {
+  data() {
+    return {
+      ticket: null,
+    };
+  },
+  created() {
+    const ticket = this.$store.getters.getTicket;
+    this.ticket = ticket;
+    this.setSection("TicketDisplayPage");
+  },
   methods: {
-    ...mapMutations(["clearState"]),
+    ...mapMutations(["clearState", "setSection"]),
     clearStateAction() {
       this.clearState();
     },
 
-    generatePDF() {
-      // const studentClassMap = {
-      //   F: 'Freshman',
-      //   T: 'Transferee',
-      //   CE: 'Cross-enrollee',
-      //   SC: 'Second Course'
-      // };
+    print() {
+      const printContent = document.getElementById("ticket-display");
+      const originalContents = document.body.innerHTML;
 
-      const doc = new jsPDF();
-      doc.text("Test", 100, 100);
-
-      doc.save(`test_transcript.pdf`);
+      document.body.innerHTML = printContent.innerHTML;
+      window.print();
+      document.body.innerHTML = originalContents;
       // const jsonData = this.record;
       // const name = jsonData.name;
       // const program = jsonData.program;
@@ -157,7 +144,10 @@ export default {
       // };
 
       // headerLogoImg.src = headerLogoExport;
-    }
+    },
+  },
+  components: {
+    TicketDisplay,
   },
 };
 </script>

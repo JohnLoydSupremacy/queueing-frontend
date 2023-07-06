@@ -73,9 +73,7 @@ import Button from "../components/Button.vue";
         Yes, I want to add more
       </Button>
     </RouterLink>
-    <RouterLink to="/ticket-display">
-      <Button @click="submit('No')"> Finish </Button>
-    </RouterLink>
+    <Button @click="submit('No')"> Finish </Button>
     <!-- <Button> Guest </Button>
     <Button> Guest </Button> -->
   </div>
@@ -88,6 +86,8 @@ import { TICKETS_ENDPOINT } from "../config.js";
 
 export default {
   created() {
+    this.setSection("AdditionalRequestsPage");
+
     this.requests = this.$store.getters.getRequests;
 
     const userType = this.$store.getters.getUserType;
@@ -114,6 +114,7 @@ export default {
       service != null
     ) {
       this.addRequest(request);
+      console.log("Added requests");
     }
   },
   data() {
@@ -122,7 +123,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["addRequest", "removeRequest", "clearState"]),
+    ...mapMutations(["addRequest", "removeRequest", "setTicket", "setSection"]),
 
     submit(answer) {
       const requests = this.$store.getters.getRequests;
@@ -130,16 +131,14 @@ export default {
       if (answer === "Yes") {
         //
       } else {
-        const requestData = {
-          requests: requests,
-        };
+        const requestData = requests;
 
         // Make a POST request to the backend
         axios
           .post(TICKETS_ENDPOINT, requestData)
-          .then(() => {
-            // Reset the state properties
-            this.clearState();
+          .then((response) => {
+            this.setTicket(response.data.ticket);
+            this.$router.push("/ticket-display");
           })
           .catch((error) => {
             console.error("Error submitting requests:", error);

@@ -4,7 +4,7 @@ import Button from "../components/Button.vue";
 </script>
 
 <template>
-  <Question class="text-center" text="Please choose a service" />
+  <Question class="text-center" text="Select a Service" />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
     v-if="services.length > 0"
@@ -36,6 +36,7 @@ import Button from "../components/Button.vue";
 <script>
 import axios from "axios";
 import { DEPARTMENTS_ENDPOINT } from "../config";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -45,6 +46,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setSection"]),
     async getServices(departmentId) {
       const response = await axios.get(
         `${DEPARTMENTS_ENDPOINT}/${departmentId}`
@@ -61,6 +63,7 @@ export default {
     const department = this.$store.getters.getDepartment;
     this.department = department;
     this.getServices(department);
+    this.setSection("ServiceSelectionPage");
   },
 };
 </script>

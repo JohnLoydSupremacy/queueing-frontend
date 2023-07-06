@@ -108,7 +108,7 @@ export default {
   created() {
     const userType = this.$store.getters.getUserType;
     this.userType = userType;
-    this.setSection("IdInput");
+    this.setSection("IDInputPage");
   },
 };
 </script>
