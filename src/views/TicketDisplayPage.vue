@@ -1,17 +1,20 @@
 <script setup>
 import Button from "../components/Button.vue";
 import TicketDisplay from "../components/TicketDisplay.vue";
+import FormLayout from "../views/FormLayout.vue"
 </script>
 
 <template>
-  <div class="dark:text-white">Ticket Display</div>
-  <div id="ticket-display">
-    <TicketDisplay :ticket="ticket" />
-  </div>
-  <router-link to="/">
-    <Button @click="clearStateAction">Start Over</Button>
-  </router-link>
-  <Button @click="print">Print</Button>
+  <FormLayout>
+    <div class="dark:text-white">Ticket Display</div>
+    <div id="ticket-display">
+      <TicketDisplay :ticket="ticket" />
+    </div>
+    <router-link to="/">
+      <Button @click="clearStateAction">Start Over</Button>
+    </router-link>
+    <Button @click="print">Print</Button>
+  </FormLayout>
 </template>
 
 <script>

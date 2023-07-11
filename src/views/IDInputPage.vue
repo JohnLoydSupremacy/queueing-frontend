@@ -1,39 +1,42 @@
 <script setup>
 import Question from "../components/Question.vue";
 import Button from "../components/Button.vue";
+import FormLayout from "../views/FormLayout.vue"
 </script>
 
 <template>
-  <Question text="Enter your ID number" v-if="userType === 'student'" />
-  <Question text="Enter your name" v-else />
-  <input
-    v-model="studentId"
-    v-if="userType === 'student'"
-    id="inputId"
-    aria-describedby="inputField"
-    class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-6/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    placeholder="Please enter your ID"
-    maxlength="10"
-    @input="validateInput"
-  />
-  <input
-    v-model="studentId"
-    v-else
-    id="inputId"
-    aria-describedby="inputField"
-    class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-6/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    placeholder="Please enter your name"
-    required
-  />
-  <p class="text-red-500 mt-3">{{ inputMessage }}</p>
-  <p class="text-green-500 mt-3">{{ info }}</p>
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
-  >
-    <Button @click="setStudentIdAction"> Submit </Button>
-    <!-- <Button> Guest </Button>
-    <Button> Guest </Button> -->
-  </div>
+  <FormLayout>
+    <Question text="Enter your ID number" v-if="userType === 'student'" />
+    <Question text="Enter your name" v-else />
+    <input
+      v-model="studentId"
+      v-if="userType === 'student'"
+      id="inputId"
+      aria-describedby="inputField"
+      class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-6/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Please enter your ID"
+      maxlength="10"
+      @input="validateInput"
+    />
+    <input
+      v-model="studentId"
+      v-else
+      id="inputId"
+      aria-describedby="inputField"
+      class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-6/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Please enter your name"
+      required
+    />
+    <p class="text-red-500 mt-3">{{ inputMessage }}</p>
+    <p class="text-green-500 mt-3">{{ info }}</p>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
+    >
+      <Button @click="setStudentIdAction"> Submit </Button>
+      <!-- <Button> Guest </Button>
+      <Button> Guest </Button> -->
+    </div>
+  </FormLayout>
 </template>
 
 <script>
