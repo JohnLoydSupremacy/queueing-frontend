@@ -10,9 +10,6 @@ import FormLayout from "../views/FormLayout.vue"
     <div id="ticket-display">
       <TicketDisplay :ticket="ticket" />
     </div>
-    <router-link to="/">
-      <Button @click="clearStateAction">Start Over</Button>
-    </router-link>
     <Button @click="print">Print</Button>
   </FormLayout>
 </template>

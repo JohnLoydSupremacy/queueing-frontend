@@ -107,16 +107,39 @@ export default {
   computed: {
     breadcrumbSteps() {
       return [
-        { label: "Select Departments", section: "DepartmentSelectionPage", link: "/"},
-        { label: "Select Service", section: "ServiceSelectionPage", link: "/service-selection"},
-        { label: "Select User Type", section: "UserTypeSelectionPage", link: "/user-type"},
-        { label: "Enter ID", section: "IDInputPage", link: "/id-input"},
-        { label: "Summary", section: "AdditionalRequestsPage", link: "/additional-requests"},
-        { label: "Ticket", section: "TicketDisplayPage", link: "/ticket-display"},
+        {
+          label: "Select Departments",
+          section: "DepartmentSelectionPage",
+          link: "/",
+        },
+        {
+          label: "Select Service",
+          section: "ServiceSelectionPage",
+          link: "/service-selection",
+        },
+        {
+          label: "Select User Type",
+          section: "UserTypeSelectionPage",
+          link: "/user-type",
+        },
+        { label: "Enter ID", section: "IDInputPage", link: "/id-input" },
+        {
+          label: "Summary",
+          section: "AdditionalRequestsPage",
+          link: "/additional-requests",
+        },
+        {
+          label: "Ticket",
+          section: "TicketDisplayPage",
+          link: "/ticket-display",
+        },
       ];
     },
     appSection() {
       return this.$store.getters.getSection;
+    },
+    showStartOverButton() {
+      return this.appSection !== "TicketDisplayPage";
     },
   },
   mounted() {
@@ -138,26 +161,26 @@ export default {
             :class="breadCrumbButtonClasses[step.section]"
           >
             <RouterLink :to="step.link">
-                <button
+              <button
                 class="flex items-center"
                 :class="breadCrumbButtonClasses[step.section]"
-                >
+              >
                 <svg
-                    v-if="index !== 0"
-                    aria-hidden="true"
-                    class="w-6 h-6 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
+                  v-if="index !== 0"
+                  aria-hidden="true"
+                  class="w-6 h-6 text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                    <path
+                  <path
                     fill-rule="evenodd"
                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                     clip-rule="evenodd"
-                    ></path>
+                  ></path>
                 </svg>
                 {{ step.label }}
-                </button>
+              </button>
             </RouterLink>
           </li>
         </ol>
@@ -199,12 +222,17 @@ export default {
             <slot></slot>
           </ContentWrapper>
           <div class="py-2">
-            <ButtonBack @click="goBack">Back</ButtonBack>
+            <ButtonBack v-if="this.appSection !== 'TicketDisplayPage'" @click="goBack"></ButtonBack>
+            <router-link v-else to="/">
+              <ButtonBack @click="clearStateAction"></ButtonBack>
+            </router-link>
+            
           </div>
         </div>
       </div>
+    
     </Wrapper>
-    <router-link to="/">
+    <router-link v-if="showStartOverButton" to="/">
       <ButtonStartOver @click="clearStateAction">Reset</ButtonStartOver>
     </router-link>
   </theme-provider>
