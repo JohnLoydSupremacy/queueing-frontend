@@ -4,6 +4,7 @@ import IDInputPage from "../views/IDInputPage.vue";
 import DepartmentSelectionPage from "../views/DepartmentSelectionPage.vue";
 import ServiceSelectionPage from "../views/ServiceSelectionPage.vue";
 import AdditionalRequestsPage from "../views/AdditionalRequestsPage.vue";
+import StressTestPage from "../views/StressTestPage.vue";
 import TicketDisplayPage from "../views/TicketDisplayPage.vue";
 import QueueWindowPage from "../views/QueueWindowPage.vue";
 
@@ -44,15 +45,25 @@ const router = createRouter({
       component: AdditionalRequestsPage,
     },
     {
+      path: "/stresstest",
+      name: "stresstest",
+      component: StressTestPage,
+    },
+    {
       path: "/ticket-display",
       name: "ticket-display",
       component: TicketDisplayPage,
     },
     {
-      path: "/window",
+      path: "/window/",
       name: "window",
       component: QueueWindowPage,
     },
+    // {
+    //   path: "/window/:department",
+    //   name: "window",
+    //   component: QueueWindowPage,
+    // },
   ],
 });
 

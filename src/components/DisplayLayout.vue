@@ -18,48 +18,38 @@
             <Window
               title="NOW SERVING"
               :ticket="tickets[0]"
-              :size="50"
+              :size="45"
               :width="45"
-              :fontSize="4.3"
-              :class="{ blinking: isBlinking }"
+              :fontSize="7"
+              :class="{}"
             >
             </Window>
           </div>
           <div class="now-serving col col-start-2 row-start-1 col-end-4">
-            <!-- <video width="1280" controls>
-              <source src="@/assets/SketchRecognition.mp4" type="video/mp4" />
-              <source src="@/assets/SketchRecognition.mp4" type="video/ogg" />
-              Your browser does not support the video tag.
-            </video> -->
-            <iframe
-              width="1000"
-              height="640"
-              src="https://www.youtube.com/embed/SWGAPXmwhDE"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-            ></iframe>
+            <div style="width: 100vh">
+              <VideoPlayer style="width: 100%; height: 56.25vh" />
+            </div>
           </div>
           <div class="grid1 grid-cols4 grid-rows-2 gap-3">
             <div class="col col-start-2 row-start-1 col-end-4"></div>
           </div>
           <!-- BELOW THE LARGE WINDOW -->
           <div class="col col-start-1 row-start-2">
-            <Window :width="45" :ticket="tickets[1]"> </Window>
+            <Window :width="45" :fontSize="7" :ticket="tickets[1]" :class="{}">
+            </Window>
           </div>
           <!-- WINDOW 2 to 5 -->
           <div class="col col-start-2 row-start-2">
-            <Window :ticket="tickets[2]"> </Window>
+            <Window :ticket="tickets[2]" :class="{}"> </Window>
           </div>
           <div class="col col-start-3 row-start-2">
-            <Window :ticket="tickets[3]"> </Window>
+            <Window :ticket="tickets[3]" :class="{}"> </Window>
           </div>
           <div class="col col-start-4 row-start-2">
-            <Window :ticket="tickets[4]"> </Window>
+            <Window :ticket="tickets[4]" :class="{}"> </Window>
           </div>
           <div class="col col-start-5 row-start-4">
-            <Window :ticket="tickets[5]"> </Window>
+            <Window :ticket="tickets[5]" :class="{}"> </Window>
           </div>
         </div>
         <div class="grid1 grid-cols-1">
@@ -68,13 +58,13 @@
           >
             <!-- WINDOW 6 to 8 -->
             <div class="dynamic col col-start-1 row-start-3">
-              <Window :ticket="tickets[6]"> </Window>
+              <Window :ticket="tickets[6]" :class="{}"> </Window>
             </div>
             <div class="dynamic col col-start-1 row-start-2">
-              <Window :ticket="tickets[7]"> </Window>
+              <Window :ticket="tickets[7]" :class="{}"> </Window>
             </div>
             <div class="dynamic col col-start-1 row-start-1">
-              <Window :ticket="tickets[8]"> </Window>
+              <Window :ticket="tickets[8]" :class="{}"> </Window>
             </div>
           </div>
         </div>
@@ -85,6 +75,8 @@
 
 <script setup>
 import Window from "../components/Window.vue";
+import VideoPlayer from "../components/VideoPlayer.vue";
+import startSound from "@/assets/start.mp3";
 </script>
 
 <script>
@@ -92,65 +84,19 @@ export default {
   data() {
     return {
       ticket: null,
-      isBlinking: false,
     };
   },
-  // mounted() {
-  //   setInterval(() => {
-  //     this.isBlinking = !this.isBlinking;
-  //   }, 500); // Adjust the interval duration as desired
-  // },
-  mounted() {
-    let blinkCount = 0; // Counter for blink instances
-    const maxBlinkCount = 5; // Maximum number of blink instances
-    let previousTicket = null; // Variable to store the previous ticket value
-
-    this.$watch(
-      "tickets",
-      () => {
-        if (
-          this.tickets.length > 0 &&
-          this.tickets[0]?.ticket_no !== previousTicket
-        ) {
-          blinkCount = 0; // Reset blink count when a new ticket is displayed
-          previousTicket = this.tickets[0]?.ticket_no; // Store the current ticket value
-
-          this.isBlinking = true; // Activate blinking
-          const blinkInterval = setInterval(() => {
-            this.isBlinking = !this.isBlinking; // Toggle the isBlinking variable
-
-            blinkCount++; // Increment blink count
-
-            if (blinkCount >= maxBlinkCount) {
-              clearInterval(blinkInterval); // Stop the interval when reaching the maximum blink count
-              this.isBlinking = false; // Deactivate blinking
-            }
-          }, 500); // Adjust the interval duration as desired
-        }
-      },
-      { immediate: true }
-    );
+  methods: {
   },
-  props: ["tickets"],
+  props: ["tickets", "counters"],
+  component: {
+    VideoPlayer,
+  },
 };
 </script>
 
 <style scoped>
-.blinking {
-  animation: blinkAnimation 1s infinite;
-}
 
-@keyframes blinkAnimation {
-  0% {
-    background-color: transparent;
-  }
-  50% {
-    background-color: rgb(6, 133, 33);
-  }
-  100% {
-    background-color: transparent;
-  }
-}
 .display-layout {
   /* border: 0.2vh solid #000; */
   padding: 1vh;
@@ -172,6 +118,9 @@ export default {
 .dynamicCenter {
   text-align: -webkit-center;
 }
+.text-xlg {
+  font-size: 5vh;
+}
 
 @media (min-width: 220vh) {
   .dynamic.col-start-1.row-start-3 {
@@ -185,20 +134,6 @@ export default {
   .dynamic.col-start-1.row-start-1 {
     grid-row-start: 4;
     grid-column-start: 4;
-  }
-}
-
-@media (min-width: 220vh) {
-  @keyframes blinkAnimation {
-    0% {
-      background-color: transparent;
-    }
-    50% {
-      background-color: yellow;
-    }
-    100% {
-      background-color: transparent;
-    }
   }
 }
 </style>

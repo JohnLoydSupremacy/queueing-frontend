@@ -30,7 +30,7 @@ import FormLayout from "../views/FormLayout.vue"
     <p class="text-red-500 mt-3">{{ inputMessage }}</p>
     <p class="text-green-500 mt-3">{{ info }}</p>
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-2 mt-2"
+      style="width: fit-content"
     >
       <Button @click="setStudentIdAction"> Submit </Button>
       <!-- <Button> Guest </Button>

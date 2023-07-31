@@ -8,6 +8,7 @@ const state = {
   requests: [],
   section: null,
   ticket: null,
+  ticketToPlay: null,
 };
 
 const getters = {
@@ -20,6 +21,7 @@ const getters = {
   getRequests: (state) => state.requests,
   getSection: (state) => state.section,
   getTicket: (state) => state.ticket,
+  getTicketToPlay: (state) => state.ticketToPlay,
 };
 
 const mutations = {
@@ -55,6 +57,12 @@ const mutations = {
   },
   setTicket(state, ticket) {
     state.ticket = ticket;
+  },
+  setTicketToPlay(state, ticket) {
+    state.ticketToPlay = ticket;
+  },
+  removeTicketToPlay(state){
+    state.ticketToPlay = null;
   },
   // Clear the state properties
   clearState(state) {
@@ -104,6 +112,9 @@ const actions = {
   setTicketAction({ commit }, ticket) {
     commit("setTicket", ticket);
   },
+  setTicketToPlayAction({ commit }, ticket) {
+    commit("setTicketToPlay", ticket);
+  },
   // Action to clear the state
   clearStateAction({ commit }) {
     commit("clearState");
@@ -118,6 +129,7 @@ const actions = {
     const requests = JSON.parse(localStorage.getItem("requests"));
     const section = localStorage.getItem("section");
     const ticket = JSON.parse(localStorage.getItem("ticket"));
+    const ticketToPlay = localStorage.getItem("ticketToPlay");
 
     commit("setUserType", userType);
     commit("setStudentId", studentId);
@@ -128,6 +140,7 @@ const actions = {
     commit("setRequests", requests);
     commit("setSection", section);
     commit("setTicket", ticket);
+    commit("setTicketToPlay", ticketToPlay);
   },
 };
 
@@ -144,6 +157,7 @@ const plugins = [
       localStorage.setItem("serviceName", state.serviceName);
       localStorage.setItem("section", state.section);
       localStorage.setItem("ticket", JSON.stringify(state.ticket));
+      localStorage.setItem("ticketToPlay", state.ticketToPlay);
     });
   },
 ];
